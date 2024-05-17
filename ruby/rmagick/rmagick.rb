@@ -15,15 +15,21 @@ def strip_without_icc_profile(image)
   # Exif情報の削除
   image.strip!
 
+  print icc_profile + "\n"
+
   # カラープロファイルを再設定
-  if icc_profile
-    # 拡張子が icc でなければ add_profile でエラーとなる
-    Tempfile.open(%w[icc_profile .icc]) do |f|
-      f.write(icc_profile)
-      f.flush
-      image.add_profile(f.path)
-    end
-  end
+  image.color_profile = icc_profile
+
+  # # カラープロファイルを再設定
+  # if icc_profile
+  #   # 拡張子が icc でなければ add_profile でエラーとなる
+  #   Tempfile.open(%w[icc_profile .icc]) do |f|
+  #     f.binmode
+  #     f.write(icc_profile)
+  #     f.flush
+  #     image.add_profile(f.path)
+  #   end
+  # end
   image
 end
 
